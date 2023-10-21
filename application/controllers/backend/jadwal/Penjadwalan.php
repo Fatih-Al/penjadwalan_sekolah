@@ -67,21 +67,11 @@ class Penjadwalan extends MY_Controller
 	public function get_data_id(){
 		$id = $this->get('id');
 		$data = $this->jadwal_m->get_data_id($id);
-		$resdata = [];
-		if($data['jadwal']->prodi_id == $this->data['token']['prodi']){
-			$resdata = $data;
-			$response = [
-				'text' => MESSAGE_SUCCESS['GET']['TEXT'],
-				'info' => MESSAGE_SUCCESS['GET']['INFO'],
-			];
-		} else {
-			$resdata = [];
-			$response = [
-				'text' => MESSAGE_FAIL['GET_NO_AUTH']['TEXT'],
-				'info' => MESSAGE_FAIL['GET_NO_AUTH']['INFO'],
-			];
-		}
-
+		$resdata = $data;
+		$response = [
+			'text' => MESSAGE_SUCCESS['GET']['TEXT'],
+			'info' => MESSAGE_SUCCESS['GET']['INFO'],
+		];
 		$res = [
 			'response' => $response,
 			'data' => $resdata,
@@ -93,10 +83,7 @@ class Penjadwalan extends MY_Controller
 		$start = $this->post('start');
 		$end = $this->post('end');
 		$hari = $this->post('hari');
-		$cek = $this->jadwal_m->get_data_id($id);
-
-		if($cek['jadwal']->prodi_id == $this->data['token']['prodi']){
-			$update = $this->jadwal_m->update($id,['jadwal_hari' => $hari,'jadwal_jam_masuk' => $start,'jadwal_jam_keluar' => $end]);
+		$update = $this->jadwal_m->update($id,['jadwal_hari' => $hari,'jadwal_jam_masuk' => $start,'jadwal_jam_keluar' => $end]);
 			if($update == 1){
 				$response = [
 					'text' => MESSAGE_SUCCESS['UPDATE']['TEXT'],
@@ -108,12 +95,6 @@ class Penjadwalan extends MY_Controller
 					'info' => MESSAGE_FAIL['UPDATE']['INFO'],
 				];
 			}
-		} else {
-			$response = [
-				'text' => MESSAGE_FAIL['GET_NO_AUTH']['TEXT'],
-				'info' => MESSAGE_FAIL['GET_NO_AUTH']['INFO'],
-			];
-		}
 		echo json_encode($response);
 	}
 
